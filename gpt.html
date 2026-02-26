@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Single-page responsive resume website" />
+  <title>John Doe – Software Engineer</title>
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --card: #f8fafc;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+      --success: #16a34a;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b1220;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --card: #111827;
+      --border: #1f2933;
+      --accent: #60a5fa;
+      --success: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+    }
+
+    .nav-links {
+      display: none;
+      gap: 1rem;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: transform 0.15s ease, background 0.2s ease;
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    section {
+      padding: 3rem 0 2.5rem;
+    }
+
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin: 0.75rem 0 1.25rem;
+      max-width: 520px;
+    }
+
+    .stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .chip {
+      font-size: 0.75rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: transform 0.2s ease, opacity 0.6s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .skills-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 0.25rem;
+    }
+
+    .skills-bar span {
+      display: block;
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 1s ease;
+    }
+
+    form {
+      display: grid;
+      gap: 0.75rem;
+      max-width: 480px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.6rem 0.7rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .error {
+      font-size: 0.75rem;
+      color: #ef4444;
+      display: none;
+    }
+
+    footer {
+      padding: 2rem 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    /* Tablet and up */
+    @media (min-width: 640px) {
+      .nav-links {
+        display: flex;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      .grid.two {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Desktop */
+    @media (min-width: 1024px) {
+      .hero h1 {
+        font-size: 3rem;
+      }
+      .grid.three {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="container">
+    <strong>JD</strong>
+    <div class="nav-links" aria-label="Primary Navigation">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+      <a class="btn primary" href="#" download>Download Resume</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero container" id="hero">
+    <div>
+      <h1>John Doe</h1>
+      <h3>Software Engineer</h3>
+      <p>Building reliable, scalable web systems with a focus on performance, UX, and clean architecture.</p>
+      <div class="stack">
+        <span class="chip">JavaScript</span>
+        <span class="chip">Python</span>
+        <span class="chip">React</span>
+        <span class="chip">Node.js</span>
+        <span class="chip">Cloud</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" id="about">
+    <h2>About Me</h2>
+    <div class="card reveal">
+      <p>
+        I am a full-stack engineer with 4+ years of experience designing, building, and shipping production-grade applications.
+        I enjoy solving real-world problems with clean code, scalable systems, and thoughtful user experiences.
+      </p>
+    </div>
+  </section>
+
+  <section class="container" id="skills">
+    <h2>Skills</h2>
+    <div class="grid two">
+      <div class="card reveal">
+        <strong>JavaScript</strong>
+        <div class="skills-bar"><span data-level="90"></span></div>
+      </div>
+      <div class="card reveal">
+        <strong>Python</strong>
+        <div class="skills-bar"><span data-level="85"></span></div>
+      </div>
+      <div class="card reveal">
+        <strong>SQL</strong>
+        <div class="skills-bar"><span data-level="80"></span></div>
+      </div>
+      <div class="card reveal">
+        <strong>Docker & CI/CD</strong>
+        <div class="skills-bar"><span data-level="75"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" id="experience">
+    <h2>Experience</h2>
+    <div class="card reveal">
+      <strong>Senior Software Engineer – Acme Tech (2023–Present)</strong>
+      <ul>
+        <li>Led development of a high-traffic web platform serving 100k+ users.</li>
+        <li>Improved API response times by 40% through caching and query optimization.</li>
+        <li>Mentored junior engineers and conducted code reviews.</li>
+      </ul>
+    </div>
+    <div class="card reveal">
+      <strong>Software Engineer – Nova Systems (2021–2023)</strong>
+      <ul>
+        <li>Built internal dashboards for operations and analytics.</li>
+        <li>Automated deployments using CI/CD pipelines.</li>
+        <li>Collaborated with product teams to deliver features on schedule.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container" id="projects">
+    <h2>Projects</h2>
+    <div class="grid two">
+      <div class="card reveal">
+        <strong>TaskFlow</strong>
+        <p>Productivity app for task and project management.</p>
+        <small>Tech: React, Node.js, PostgreSQL</small>
+      </div>
+      <div class="card reveal">
+        <strong>InsightDash</strong>
+        <p>Analytics dashboard for business metrics and reporting.</p>
+        <small>Tech: Vue.js, Python, REST APIs</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" id="certifications">
+    <h2>Certifications</h2>
+    <div class="card reveal">
+      <ul>
+        <li>AWS Certified Solutions Architect – Associate</li>
+        <li>Google Professional Data Engineer</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container" id="education">
+    <h2>Education</h2>
+    <div class="card reveal">
+      <strong>B.Tech in Computer Science</strong><br />
+      XYZ University, 2017–2021
+    </div>
+  </section>
+
+  <section class="container" id="contact">
+    <h2>Contact</h2>
+    <p>
+      Email: <a href="mailto:john.doe@example.com">john.doe@example.com</a> ·
+      <a href="#">LinkedIn</a> · <a href="#">GitHub</a>
+    </p>
+
+    <form id="contactForm" novalidate>
+      <input type="text" id="name" placeholder="Your Name" required />
+      <span class="error" id="nameError">Name is required.</span>
+
+      <input type="email" id="email" placeholder="Your Email" required />
+      <span class="error" id="emailError">Valid email is required.</span>
+
+      <textarea id="message" placeholder="Your Message" required></textarea>
+      <span class="error" id="messageError">Message cannot be empty.</span>
+
+      <button type="submit" class="btn primary">Send Message</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  © 2026 John Doe. All rights reserved.
+</footer>
+
+<script>
+  // Dark mode toggle with persistence
+  const themeToggle = document.getElementById("themeToggle");
+  const root = document.documentElement;
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme) {
+    root.setAttribute("data-theme", savedTheme);
+    themeToggle.textContent = savedTheme === "dark" ? "☀️" : "🌙";
+  }
+
+  themeToggle.addEventListener("click", () => {
+    const current = root.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    localStorage.setItem("theme", next);
+    themeToggle.textContent = next === "dark" ? "☀️" : "🌙";
+  });
+
+  // Intersection observer for reveal animations and skill bars
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          const bar = entry.target.querySelector(".skills-bar span");
+          if (bar) {
+            bar.style.width = bar.dataset.level + "%";
+          }
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+  // Front-end form validation
+  document.getElementById("contactForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let valid = true;
+
+    const name = document.getElementById("name");
+    const email = document.getElementById("email");
+    const message = document.getElementById("message");
+
+    document.querySelectorAll(".error").forEach(err => (err.style.display = "none"));
+
+    if (!name.value.trim()) {
+      document.getElementById("nameError").style.display = "block";
+      valid = false;
+    }
+
+    if (!email.validity.valid) {
+      document.getElementById("emailError").style.display = "block";
+      valid = false;
+    }
+
+    if (!message.value.trim()) {
+      document.getElementById("messageError").style.display = "block";
+      valid = false;
+    }
+
+    if (valid) {
+      alert("Message validated (demo only, no backend).");
+      this.reset();
+    }
+  });
+</script>
+
+</body>
+</html>
